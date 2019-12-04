@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/twoHundredDP"
+            android:background="@android:color/darker_gray"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStrEvent"
+                    android:layout_width="@dimen/zeroDP"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tenDP"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/app_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStrDate"
+                    android:layout_width="@dimen/zeroDP"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrEvent"
+                    tools:text="30/11/19" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSeparator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/score_separator"
+                    android:textSize="@dimen/twentyFiveSP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrDate" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHomeScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tenDP"
+                    android:textSize="@dimen/fiftySP"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvSeparator"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+                    tools:text="0" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgHomeTeam"
+                    android:layout_width="@dimen/oneHundredDP"
+                    android:layout_height="@dimen/oneHundredDP"
+                    android:layout_margin="@dimen/tenDP"
+                    app:layout_constraintEnd_toStartOf="@id/tvHomeScore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+                    tools:src="@drawable/ic_launcher_background" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHomeTeam"
+                    android:layout_width="@dimen/zeroDP"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tenDP"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvHomeScore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgHomeTeam"
+                    tools:text="@string/app_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAwayScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tenDP"
+                    android:textSize="@dimen/fiftySP"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvSeparator"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+                    tools:text="0" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAwayTeam"
+                    android:layout_width="@dimen/oneHundredDP"
+                    android:layout_height="@dimen/oneHundredDP"
+                    android:layout_margin="@dimen/tenDP"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAwayScore"
+                    app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+                    tools:src="@drawable/ic_launcher_background" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAwayTeam"
+                    android:layout_width="@dimen/zeroDP"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/tenDP"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tvAwayScore"
+                    app:layout_constraintTop_toBottomOf="@id/imgAwayTeam"
+                    tools:text="@string/app_name" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="@dimen/fiftyDP"
+                    android:layout_height="@dimen/fiftyDP"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewGoals"
+                android:layout_width="@dimen/zeroDP"
+                android:layout_height="@dimen/oneHundredFiftyDP"
+                android:layout_margin="@dimen/tenDP"
+                app:cardCornerRadius="@dimen/twentyDP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/goalsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/tenDP"
+                        android:text="@string/goals_label"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHomeTeamGoals"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvAwayTeamGoals"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/goalsLabel" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAwayTeamGoals"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvHomeTeamGoals"
+                        app:layout_constraintTop_toBottomOf="@id/goalsLabel" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewYellowCards"
+                android:layout_width="@dimen/zeroDP"
+                android:layout_height="@dimen/oneHundredFiftyDP"
+                android:layout_margin="@dimen/tenDP"
+                app:cardCornerRadius="@dimen/twentyDP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewGoals">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/twentyFiveDP"
+                        android:layout_height="@dimen/twentyFiveDP"
+                        android:src="@color/colorYellow"
+                        android:layout_margin="@dimen/tenDP"
+                        app:layout_constraintEnd_toStartOf="@id/yellowCardLabel"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/yellowCardLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/tenDP"
+                        android:text="@string/yellow_card_label"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHomeTeamYellowCard"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvAwayTeamYellowCard"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/yellowCardLabel" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAwayTeamYellowCard"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvHomeTeamYellowCard"
+                        app:layout_constraintTop_toBottomOf="@id/yellowCardLabel" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewRedCards"
+                android:layout_width="@dimen/zeroDP"
+                android:layout_height="@dimen/oneHundredFiftyDP"
+                android:layout_margin="@dimen/tenDP"
+                app:cardCornerRadius="@dimen/twentyDP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewYellowCards">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/twentyFiveDP"
+                        android:layout_height="@dimen/twentyFiveDP"
+                        android:src="@color/colorRed"
+                        android:layout_margin="@dimen/tenDP"
+                        app:layout_constraintEnd_toStartOf="@id/redCardLabel"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/redCardLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/tenDP"
+                        android:text="@string/red_card_label"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHomeTeamRedCard"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvAwayTeamRedCard"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/redCardLabel" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAwayTeamRedCard"
+                        android:layout_width="@dimen/zeroDP"
+                        android:layout_height="@dimen/zeroDP"
+                        android:layout_margin="@dimen/fiveDP"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvHomeTeamRedCard"
+                        app:layout_constraintTop_toBottomOf="@id/redCardLabel" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
