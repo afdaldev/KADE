@@ -2,26 +2,22 @@ package id.afdaldev.footballmatchscheduleapp.league
 
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.*
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.*
-import id.afdaldev.footballmatchscheduleapp.data.model.League
-import id.afdaldev.footballmatchscheduleapp.data.model.Search
 import id.afdaldev.footballmatchscheduleapp.data.model.SearchItem
-import id.afdaldev.footballmatchscheduleapp.data.network.APIService
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
 import id.afdaldev.footballmatchscheduleapp.lookupleague.LookUpLeagueFragment
 import id.afdaldev.footballmatchscheduleapp.search.SearchAdapter
-import kotlinx.android.synthetic.main.recyclerview.progressBar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import id.afdaldev.footballmatchscheduleapp.search.SearchViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -31,9 +27,9 @@ class LeagueFragment : Fragment() {
     private lateinit var leagueAdapter: LeagueAdapter
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private lateinit var leagueLayoutManager: LinearLayoutManager
     private lateinit var searchLayoutManager: LinearLayoutManager
-    private var league: MutableList<League> = mutableListOf()
     private var searchList: MutableList<SearchItem> = mutableListOf()
     private var soccerList: List<SearchItem> = mutableListOf()
 
@@ -53,10 +49,10 @@ class LeagueFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        progressBar.visible()
-        recyclerView = view!!.findViewById(R.id.recyclerView)
+        recyclerView = requireActivity().findViewById(R.id.recyclerView)
+        progressBar = requireActivity().findViewById(R.id.progressBar)
 
-        initData()
+        progressBar.visible()
         leagueLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = leagueLayoutManager
 
@@ -64,25 +60,13 @@ class LeagueFragment : Fragment() {
             setIdLeague(it.idLeague.toString())
             addFragment(LookUpLeagueFragment(), R.id.fragment_container)
         }
-        progressBar.gone()
-        leagueAdapter.setLeague(league)
-        recyclerView.adapter = leagueAdapter
-    }
 
-    private fun initData() {
-        val idLeague = resources.getStringArray(R.array.idLeague)
-        val strLeague = resources.getStringArray(R.array.strLeague)
-        val strBadge = resources.getStringArray(R.array.strBadge)
-        league.clear()
-        for (i in idLeague.indices) {
-            league.add(
-                League(
-                    idLeague[i],
-                    strLeague[i],
-                    strBadge[i]
-                )
-            )
-        }
+        val leagueViewModel = ViewModelProviders.of(this)[LeagueViewModel::class.java]
+        leagueViewModel.getLeague().observe(this, Observer {
+            progressBar.gone()
+            leagueAdapter.setLeague(it)
+        })
+        recyclerView.adapter = leagueAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -92,6 +76,7 @@ class LeagueFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchSomething(query.toString())
+                Toast.makeText(context, "Search : $query", Toast.LENGTH_SHORT).show()
                 return true
             }
 
@@ -112,19 +97,13 @@ class LeagueFragment : Fragment() {
             setIdAwayTeam(it.idAwayTeam)
             replaceFragment(LookUpEventFragment.newInstance(it.idEvent), R.id.fragment_container)
         }
-        APIService().getSearch(e).enqueue(object : Callback<Search> {
-            override fun onFailure(call: Call<Search>, t: Throwable) {
-                d("TAG", "searchOnFailure : ${t.localizedMessage}")
-            }
 
-            override fun onResponse(call: Call<Search>, response: Response<Search>) {
-                val responses = response.body()?.event
-                searchList.clear()
-                if (responses != null) searchList.addAll(responses) else Toast.makeText(context, "No Data For : $e", Toast.LENGTH_SHORT).show()
-            }
+        val searchViewModel = ViewModelProviders.of(this)[SearchViewModel::class.java]
+        searchViewModel.loadSearch(e).observe(this, Observer {
+            searchList.clear()
+            searchList.addAll(it.event)
         })
         filterSoccer()
-        recyclerView.adapter = searchAdapter
     }
 
     private fun filterSoccer(){
@@ -133,5 +112,6 @@ class LeagueFragment : Fragment() {
         }
         progressBar.gone()
         searchAdapter.setSearch(soccerList)
+        recyclerView.adapter = searchAdapter
     }
 }
