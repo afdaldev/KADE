@@ -7,13 +7,11 @@
     android:background="@android:color/white">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/twoHundredDP"
             android:background="@android:color/darker_gray"
@@ -258,7 +256,6 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewRedCards"
                 android:layout_width="@dimen/zeroDP"
                 android:layout_height="@dimen/oneHundredFiftyDP"
                 android:layout_margin="@dimen/tenDP"

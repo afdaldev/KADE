@@ -1,7 +1,9 @@
 package id.afdaldev.footballmatchscheduleapp
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,11 +23,16 @@ fun Fragment.addFragment(fragment: Fragment, frameId: Int) {
 }
 
 fun Fragment.replaceFragment(fragment: Fragment, frameId: Int) {
-    requireActivity().supportFragmentManager.beginTransaction().replace(frameId, fragment).addToBackStack(null).commit()
+    requireActivity().supportFragmentManager.beginTransaction().replace(frameId, fragment)
+        .addToBackStack(null).commit()
 }
 
 fun imgPicasso(load: String, target: ImageView) {
     Picasso.get().load(load).fit().into(target)
+}
+
+fun showToast(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.setIdLeague(idLeague: String) {

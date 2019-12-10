@@ -4,7 +4,6 @@ package id.afdaldev.footballmatchscheduleapp.league
 import android.os.Bundle
 import android.view.*
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.*
 import id.afdaldev.footballmatchscheduleapp.data.model.SearchItem
+import id.afdaldev.footballmatchscheduleapp.favoriteevent.FavoritePagerFragment
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
 import id.afdaldev.footballmatchscheduleapp.lookupleague.LookUpLeagueFragment
 import id.afdaldev.footballmatchscheduleapp.search.SearchAdapter
@@ -71,12 +71,11 @@ class LeagueFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-        val searchItem = menu.findItem(R.id.search)
-        val searchView = searchItem.actionView as SearchView
+        val searchMenu = menu.findItem(R.id.search)
+        val searchView = searchMenu.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchSomething(query.toString())
-                Toast.makeText(context, "Search : $query", Toast.LENGTH_SHORT).show()
                 return true
             }
 
@@ -85,6 +84,16 @@ class LeagueFragment : Fragment() {
             }
         })
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.favorite ->{
+                replaceFragment(FavoritePagerFragment(), R.id.fragment_container)
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     private fun searchSomething(e: String) {
@@ -99,7 +108,7 @@ class LeagueFragment : Fragment() {
         }
 
         val searchViewModel = ViewModelProviders.of(this)[SearchViewModel::class.java]
-        searchViewModel.loadSearch(e).observe(this, Observer {
+        searchViewModel.loadSearch(e, requireContext()).observe(this, Observer {
             searchList.clear()
             searchList.addAll(it.event)
         })

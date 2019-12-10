@@ -1,6 +1,8 @@
 package id.afdaldev.footballmatchscheduleapp.search
 
+import android.content.Context
 import android.util.Log.d
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +16,7 @@ class SearchViewModel : ViewModel() {
 
     private var searchList = MutableLiveData<Search>()
 
-    private fun getSearchFromAPI(text: String): MutableLiveData<Search> {
+    private fun getSearchFromAPI(text: String, context: Context): MutableLiveData<Search> {
         val search = MutableLiveData<Search>()
         APIService().getSearch(text).enqueue(object : Callback<Search> {
             override fun onFailure(call: Call<Search>, t: Throwable) {
@@ -23,14 +25,17 @@ class SearchViewModel : ViewModel() {
 
             override fun onResponse(call: Call<Search>, response: Response<Search>) {
                 val responses = response.body()?.event
-                if (responses != null) searchList.value = response.body() else return
+                if (responses != null)
+                    search.value = response.body()
+                else
+                    Toast.makeText(context, "No Data For : $text", Toast.LENGTH_SHORT).show()
             }
         })
         return search
     }
 
-    fun loadSearch(text: String) : LiveData<Search>{
-        searchList = getSearchFromAPI(text)
+    fun loadSearch(text: String, context: Context) : LiveData<Search>{
+        searchList = getSearchFromAPI(text, context)
         return searchList
     }
 }

@@ -1,6 +1,7 @@
 package id.afdaldev.footballmatchscheduleapp.event
 
 import android.os.Bundle
+import android.util.Log.d
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ class EventFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param = it.getString(ARG_MATCH)
+            d("TAG", "PARAM LOOK : $param")
         }
     }
 
@@ -40,9 +42,9 @@ class EventFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         eventAdapter = EventAdapter {
-            setIdHomeTeam(it.idHomeTeam)
-            setIdAwayTeam(it.idAwayTeam)
-            replaceFragment(LookUpEventFragment.newInstance(it.idEvent), R.id.fragment_container)
+            setIdHomeTeam(it.idHomeTeam.toString())
+            setIdAwayTeam(it.idAwayTeam.toString())
+            replaceFragment(LookUpEventFragment.newInstance(it.idEvent.toString()), R.id.fragment_container)
         }
     }
 

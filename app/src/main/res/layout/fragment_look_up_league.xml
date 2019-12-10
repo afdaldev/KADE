@@ -7,13 +7,11 @@
     android:background="@android:color/white">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/threeHundredDP"
             android:fitsSystemWindows="true"
@@ -93,7 +91,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayoutEvent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </androidx.viewpager.widget.ViewPager>
