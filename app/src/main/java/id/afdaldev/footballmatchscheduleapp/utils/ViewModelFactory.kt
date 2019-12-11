@@ -1,4 +1,4 @@
-package id.afdaldev.footballmatchscheduleapp
+package id.afdaldev.footballmatchscheduleapp.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

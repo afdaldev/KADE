@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.afdaldev.footballmatchscheduleapp.*
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
+import id.afdaldev.footballmatchscheduleapp.utils.*
 import kotlinx.android.synthetic.main.recyclerview.*
 
 private const val ARG_MATCH = "match"
@@ -51,7 +52,10 @@ class EventFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         progressBar.visible()
-        val viewModelFactory = ViewModelFactory(getIdLeague())
+        val viewModelFactory =
+            ViewModelFactory(
+                getIdLeague()
+            )
         eventViewModel  = ViewModelProviders.of(this, viewModelFactory)[EventViewModel::class.java]
         if (param == pastEvent) showPastEvent() else showNextEvent()
         recyclerView.adapter = eventAdapter

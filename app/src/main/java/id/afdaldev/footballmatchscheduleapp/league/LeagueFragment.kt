@@ -18,6 +18,7 @@ import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
 import id.afdaldev.footballmatchscheduleapp.lookupleague.LookUpLeagueFragment
 import id.afdaldev.footballmatchscheduleapp.search.SearchAdapter
 import id.afdaldev.footballmatchscheduleapp.search.SearchViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.*
 
 /**
  * A simple [Fragment] subclass.

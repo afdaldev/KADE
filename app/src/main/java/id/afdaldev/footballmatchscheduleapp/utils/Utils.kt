@@ -1,4 +1,4 @@
-package id.afdaldev.footballmatchscheduleapp
+package id.afdaldev.footballmatchscheduleapp.utils
 
 import android.content.Context
 import android.view.View

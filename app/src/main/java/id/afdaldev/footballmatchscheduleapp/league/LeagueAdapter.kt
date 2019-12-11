@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.League
-import id.afdaldev.footballmatchscheduleapp.imgPicasso
+import id.afdaldev.footballmatchscheduleapp.utils.imgPicasso
 import kotlinx.android.synthetic.main.league_list.view.*
 
 class LeagueAdapter(private val listener: (League) -> Unit) :
@@ -34,7 +34,10 @@ class LeagueAdapter(private val listener: (League) -> Unit) :
     override fun onBindViewHolder(holder: LeagueViewHolder, position: Int) {
         val league = leaguesList[position]
         holder.tvStrLeague.text = league.strLeague
-        imgPicasso(league.strBadge.toString(), holder.strBadge)
+        imgPicasso(
+            league.strBadge.toString(),
+            holder.strBadge
+        )
 
         holder.itemView.setOnClickListener { listener(league) }
     }

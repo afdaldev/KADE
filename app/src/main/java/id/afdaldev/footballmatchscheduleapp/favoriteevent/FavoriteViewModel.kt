@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
 import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
-import id.afdaldev.footballmatchscheduleapp.showToast
+import id.afdaldev.footballmatchscheduleapp.utils.showToast
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
@@ -40,9 +40,15 @@ class FavoriteViewModel : ViewModel() {
                     Favorite.AWAY_SCORE to event.intAwayScore.toString()
                 )
             }
-            showToast(context, "Added to favorite")
+            showToast(
+                context,
+                "Added to favorite"
+            )
         } catch (e: SQLiteConstraintException) {
-            showToast(context, "error : ${e.localizedMessage}")
+            showToast(
+                context,
+                "error : ${e.localizedMessage}"
+            )
         }
     }
 
@@ -54,9 +60,15 @@ class FavoriteViewModel : ViewModel() {
                     "id" to param
                 )
             }
-            showToast(context, "Removed from favorite")
+            showToast(
+                context,
+                "Removed from favorite"
+            )
         } catch (e: SQLiteConstraintException) {
-            showToast(context, "Error : ${e.localizedMessage}")
+            showToast(
+                context,
+                "Error : ${e.localizedMessage}"
+            )
         }
     }
 }

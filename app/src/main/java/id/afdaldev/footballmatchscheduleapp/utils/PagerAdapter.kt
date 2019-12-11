@@ -1,4 +1,4 @@
-package id.afdaldev.footballmatchscheduleapp
+package id.afdaldev.footballmatchscheduleapp.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

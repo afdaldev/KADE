@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import id.afdaldev.footballmatchscheduleapp.*
 import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
+import id.afdaldev.footballmatchscheduleapp.utils.*
 import kotlinx.android.synthetic.main.recyclerview.*
 
 /**

@@ -1,7 +1,6 @@
 package id.afdaldev.footballmatchscheduleapp.lookupevent
 
 
-import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -14,10 +13,10 @@ import id.afdaldev.footballmatchscheduleapp.favoriteevent.FavoriteViewModel
 import id.afdaldev.footballmatchscheduleapp.favoriteevent.database
 import id.afdaldev.footballmatchscheduleapp.lookupevent.team.AwayTeamViewModel
 import id.afdaldev.footballmatchscheduleapp.lookupevent.team.HomeTeamViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.*
 import kotlinx.android.synthetic.main.fragment_look_up_event.*
 import kotlinx.android.synthetic.main.recyclerview.progressBar
 import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
 private const val ARG_PARAM = "param"
@@ -110,7 +109,8 @@ class LookUpEventFragment : Fragment() {
     }
 
     private fun showLookUpEvent() {
-        val viewModelFactory = ViewModelFactory(param.toString())
+        val viewModelFactory =
+            ViewModelFactory(param.toString())
         val lookUpEventViewModel =
             ViewModelProviders.of(this, viewModelFactory)[LookUpEventViewModel::class.java]
         lookUpEventViewModel.getLookUpEvent().observe(this, Observer {
@@ -149,22 +149,34 @@ class LookUpEventFragment : Fragment() {
     }
 
     private fun showHomeTeam() {
-        val viewModelFactory = ViewModelFactory(getIdHomeTeam())
+        val viewModelFactory =
+            ViewModelFactory(
+                getIdHomeTeam()
+            )
         val teamViewModel =
             ViewModelProviders.of(this, viewModelFactory)[HomeTeamViewModel::class.java]
         teamViewModel.getHomeTeam().observe(this, Observer {
             val homeTeam = it.teams[0]
-            imgPicasso(homeTeam.strTeamBadge, imgHomeTeam)
+            imgPicasso(
+                homeTeam.strTeamBadge,
+                imgHomeTeam
+            )
         })
     }
 
     private fun showAwayTeam() {
-        val viewModelFactory = ViewModelFactory(getIdAwayTeam())
+        val viewModelFactory =
+            ViewModelFactory(
+                getIdAwayTeam()
+            )
         val teamViewModel =
             ViewModelProviders.of(this, viewModelFactory)[AwayTeamViewModel::class.java]
         teamViewModel.getAwayTeam().observe(this, Observer {
             val awayTeam = it.teams[0]
-            imgPicasso(awayTeam.strTeamBadge, imgAwayTeam)
+            imgPicasso(
+                awayTeam.strTeamBadge,
+                imgAwayTeam
+            )
         })
     }
 

@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import id.afdaldev.footballmatchscheduleapp.*
 import id.afdaldev.footballmatchscheduleapp.event.EventFragment
-import id.afdaldev.footballmatchscheduleapp.PagerAdapter
+import id.afdaldev.footballmatchscheduleapp.utils.*
 
 import kotlinx.android.synthetic.main.fragment_look_up_league.*
 
@@ -29,7 +29,10 @@ class LookUpLeagueFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val pagerAdapter = PagerAdapter(childFragmentManager)
+        val pagerAdapter =
+            PagerAdapter(
+                childFragmentManager
+            )
         pagerAdapter.addFragment(EventFragment.newInstance(EventFragment.pastEvent), "Previous")
         pagerAdapter.addFragment(EventFragment.newInstance(EventFragment.nextEvent), "Next")
         viewpagerEvent.adapter = pagerAdapter
@@ -38,7 +41,10 @@ class LookUpLeagueFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         progressBar.visible()
-        val viewModelFactory = ViewModelFactory(getIdLeague())
+        val viewModelFactory =
+            ViewModelFactory(
+                getIdLeague()
+            )
         val lookUpLeagueViewModel =
             ViewModelProviders.of(this, viewModelFactory)[LookUpLeagueViewModel::class.java]
         lookUpLeagueViewModel.getLookUpLeague().observe(this, Observer {
@@ -46,7 +52,10 @@ class LookUpLeagueFragment : Fragment() {
             val lookUpLeague = it.leagues[0]
             tvLeagueName.text = lookUpLeague.strLeague
             tvDescription.text = lookUpLeague.strDescriptionEN
-            imgPicasso(lookUpLeague.strBadge, imgLeagueBadge)
+            imgPicasso(
+                lookUpLeague.strBadge,
+                imgLeagueBadge
+            )
         })
     }
 }
