@@ -2,19 +2,23 @@ package id.afdaldev.footballmatchscheduleapp.favoriteevent
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import id.afdaldev.footballmatchscheduleapp.*
+import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
-import id.afdaldev.footballmatchscheduleapp.utils.*
+import id.afdaldev.footballmatchscheduleapp.utils.ShareViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.gone
+import id.afdaldev.footballmatchscheduleapp.utils.replaceFragment
+import id.afdaldev.footballmatchscheduleapp.utils.visible
 import kotlinx.android.synthetic.main.recyclerview.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -28,7 +32,8 @@ class FavoriteFragment : Fragment() {
     private var favoriteList: MutableList<Favorite> = mutableListOf()
     private var pastList: List<Favorite> = mutableListOf()
     private var nextList: List<Favorite> = mutableListOf()
-    private lateinit var favoriteViewModel: FavoriteViewModel
+    private val favoriteEventViewModel: FavoriteEventViewModel by viewModel()
+    private val shareViewModel: ShareViewModel by sharedViewModel()
 
     private var param: String? = null
 
@@ -37,8 +42,6 @@ class FavoriteFragment : Fragment() {
         arguments?.let {
             param = it.getString(ARG_PARAM)
         }
-        favoriteViewModel =
-            ViewModelProviders.of(this)[FavoriteViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -54,8 +57,8 @@ class FavoriteFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter = FavoriteEventAdapter {
-            setIdHomeTeam(it.idHomeTeam.toString())
-            setIdAwayTeam(it.idAwayTeam.toString())
+            shareViewModel.setIdHomeTeam(it.idHomeTeam.toString())
+            shareViewModel.setIdAwayTeam(it.idAwayTeam.toString())
             replaceFragment(
                 LookUpEventFragment.newInstance(it.idEvent.toString()),
                 R.id.fragment_container
@@ -65,8 +68,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        favoriteViewModel.getFavoriteEvent(requireContext())
-        favoriteViewModel.favoriteEventList.observe(viewLifecycleOwner, Observer {
+        favoriteEventViewModel.getFavorite().observe(this, Observer {
             progressBar.gone()
             favoriteList.clear()
             favoriteList.addAll(it)

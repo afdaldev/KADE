@@ -5,89 +5,89 @@ import com.google.gson.annotations.SerializedName
 
 data class LookUpLeagueItem(
     @SerializedName("dateFirstEvent")
-    val dateFirstEvent: String,
+    val dateFirstEvent: String? = null,
     @SerializedName("idCup")
-    val idCup: String,
+    val idCup: String? = null,
     @SerializedName("idLeague")
-    val idLeague: String,
+    val idLeague: String? = null,
     @SerializedName("idSoccerXML")
-    val idSoccerXML: String,
+    val idSoccerXML: String? = null,
     @SerializedName("intFormedYear")
-    val intFormedYear: String,
+    val intFormedYear: String? = null,
     @SerializedName("strBadge")
-    val strBadge: String,
+    val strBadge: String? = null,
     @SerializedName("strBanner")
-    val strBanner: String,
+    val strBanner: String? = null,
     @SerializedName("strComplete")
-    val strComplete: String,
+    val strComplete: String? = null,
     @SerializedName("strCountry")
-    val strCountry: String,
+    val strCountry: String? = null,
     @SerializedName("strDescriptionCN")
-    val strDescriptionCN: String,
+    val strDescriptionCN: String? = null,
     @SerializedName("strDescriptionDE")
-    val strDescriptionDE: String,
+    val strDescriptionDE: String? = null,
     @SerializedName("strDescriptionEN")
-    val strDescriptionEN: String,
+    val strDescriptionEN: String? = null,
     @SerializedName("strDescriptionES")
-    val strDescriptionES: String,
+    val strDescriptionES: String? = null,
     @SerializedName("strDescriptionFR")
-    val strDescriptionFR: String,
+    val strDescriptionFR: String? = null,
     @SerializedName("strDescriptionHU")
-    val strDescriptionHU: String,
+    val strDescriptionHU: String? = null,
     @SerializedName("strDescriptionIL")
-    val strDescriptionIL: String,
+    val strDescriptionIL: String? = null,
     @SerializedName("strDescriptionIT")
-    val strDescriptionIT: String,
+    val strDescriptionIT: String? = null,
     @SerializedName("strDescriptionJP")
-    val strDescriptionJP: String,
+    val strDescriptionJP: String? = null,
     @SerializedName("strDescriptionNL")
-    val strDescriptionNL: String,
+    val strDescriptionNL: String? = null,
     @SerializedName("strDescriptionNO")
-    val strDescriptionNO: String,
+    val strDescriptionNO: String? = null,
     @SerializedName("strDescriptionPL")
-    val strDescriptionPL: String,
+    val strDescriptionPL: String? = null,
     @SerializedName("strDescriptionPT")
-    val strDescriptionPT: String,
+    val strDescriptionPT: String? = null,
     @SerializedName("strDescriptionRU")
-    val strDescriptionRU: String,
+    val strDescriptionRU: String? = null,
     @SerializedName("strDescriptionSE")
-    val strDescriptionSE: String,
+    val strDescriptionSE: String? = null,
     @SerializedName("strDivision")
-    val strDivision: String,
+    val strDivision: String? = null,
     @SerializedName("strFacebook")
-    val strFacebook: String,
+    val strFacebook: String? = null,
     @SerializedName("strFanart1")
-    val strFanart1: String,
+    val strFanart1: String? = null,
     @SerializedName("strFanart2")
-    val strFanart2: String,
+    val strFanart2: String? = null,
     @SerializedName("strFanart3")
-    val strFanart3: String,
+    val strFanart3: String? = null,
     @SerializedName("strFanart4")
-    val strFanart4: String,
+    val strFanart4: String? = null,
     @SerializedName("strGender")
-    val strGender: String,
+    val strGender: String? = null,
     @SerializedName("strLeague")
-    val strLeague: String,
+    val strLeague: String? = null,
     @SerializedName("strLeagueAlternate")
-    val strLeagueAlternate: String,
+    val strLeagueAlternate: String? = null,
     @SerializedName("strLocked")
-    val strLocked: String,
+    val strLocked: String? = null,
     @SerializedName("strLogo")
-    val strLogo: String,
+    val strLogo: String? = null,
     @SerializedName("strNaming")
-    val strNaming: String,
+    val strNaming: String? = null,
     @SerializedName("strPoster")
-    val strPoster: String,
+    val strPoster: String? = null,
     @SerializedName("strRSS")
-    val strRSS: String,
+    val strRSS: String? = null,
     @SerializedName("strSport")
-    val strSport: String,
+    val strSport: String? = null,
     @SerializedName("strTrophy")
-    val strTrophy: String,
+    val strTrophy: String? = null,
     @SerializedName("strTwitter")
-    val strTwitter: String,
+    val strTwitter: String? = null,
     @SerializedName("strWebsite")
-    val strWebsite: String,
+    val strWebsite: String? = null,
     @SerializedName("strYoutube")
-    val strYoutube: String
+    val strYoutube: String? = null
 )

@@ -128,7 +128,7 @@
                     tools:text="@string/app_name" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
+                    android:id="@+id/progressBarEvent"
                     android:layout_width="@dimen/fiftyDP"
                     android:layout_height="@dimen/fiftyDP"
                     android:visibility="invisible"

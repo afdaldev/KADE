@@ -11,16 +11,16 @@ import retrofit2.Response
 class LookUpLeagueRepository {
 
     fun getLookUpLeague(idLeague: String): MutableLiveData<LookUpLeague> {
-        val lookUpLeague = MutableLiveData<LookUpLeague>()
+        val list = MutableLiveData<LookUpLeague>()
         APIService().getLookUpLeague(idLeague).enqueue(object : Callback<LookUpLeague> {
-            override fun onFailure(call: Call<LookUpLeague>, t: Throwable) {
-                d("TAG", "lookUpLeagueOnFailure ${t.localizedMessage}")
+            override fun onFailure(call: Call<LookUpLeague>?, t: Throwable?) {
+                d("TAG", "getLookUpLeagueOnFailure : ${t?.localizedMessage}")
             }
 
-            override fun onResponse(call: Call<LookUpLeague>, response: Response<LookUpLeague>) {
-                lookUpLeague.value = response.body()
+            override fun onResponse(call: Call<LookUpLeague>?, response: Response<LookUpLeague>?) {
+                list.value = response?.body()
             }
         })
-        return lookUpLeague
+        return list
     }
 }

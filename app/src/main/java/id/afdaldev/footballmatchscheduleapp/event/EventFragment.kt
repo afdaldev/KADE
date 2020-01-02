@@ -1,25 +1,29 @@
 package id.afdaldev.footballmatchscheduleapp.event
 
 import android.os.Bundle
-import android.util.Log.d
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.afdaldev.footballmatchscheduleapp.*
+import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
-import id.afdaldev.footballmatchscheduleapp.utils.*
+import id.afdaldev.footballmatchscheduleapp.utils.ShareViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.gone
+import id.afdaldev.footballmatchscheduleapp.utils.replaceFragment
+import id.afdaldev.footballmatchscheduleapp.utils.visible
 import kotlinx.android.synthetic.main.recyclerview.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_MATCH = "match"
 
 class EventFragment : Fragment() {
 
+    private val eventViewModel: EventViewModel by viewModel()
+    private val shareViewModel: ShareViewModel by sharedViewModel()
     private lateinit var eventAdapter: EventAdapter
-    private lateinit var eventViewModel: EventViewModel
 
     private var param: String? = null
 
@@ -27,7 +31,6 @@ class EventFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param = it.getString(ARG_MATCH)
-            d("TAG", "PARAM LOOK : $param")
         }
     }
 
@@ -43,33 +46,36 @@ class EventFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         eventAdapter = EventAdapter {
-            setIdHomeTeam(it.idHomeTeam.toString())
-            setIdAwayTeam(it.idAwayTeam.toString())
-            replaceFragment(LookUpEventFragment.newInstance(it.idEvent.toString()), R.id.fragment_container)
+            shareViewModel.setIdHomeTeam(it.idHomeTeam.toString())
+            shareViewModel.setIdAwayTeam(it.idAwayTeam.toString())
+            replaceFragment(
+                LookUpEventFragment.newInstance(it.idEvent.toString()),
+                R.id.fragment_container
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
         progressBar.visible()
-        val viewModelFactory =
-            ViewModelFactory(
-                getIdLeague()
-            )
-        eventViewModel  = ViewModelProviders.of(this, viewModelFactory)[EventViewModel::class.java]
-        if (param == pastEvent) showPastEvent() else showNextEvent()
+        val idLeague = shareViewModel.idLeague.value.toString()
+        if (param == pastEvent)
+            showPastEvent(idLeague)
+        else
+            showNextEvent(idLeague)
+
         recyclerView.adapter = eventAdapter
         progressBar.gone()
     }
 
-    private fun showPastEvent() {
-        eventViewModel.getPastEvent().observe(this, Observer {
+    private fun showPastEvent(idLeague: String) {
+        eventViewModel.getPastEvent(idLeague).observe(this, Observer {
             eventAdapter.setEvent(it.events)
         })
     }
 
-    private fun showNextEvent() {
-        eventViewModel.getNextEvent().observe(this, Observer {
+    private fun showNextEvent(idLeague: String) {
+        eventViewModel.getNextEvent(idLeague).observe(this, Observer {
             eventAdapter.setEvent(it.events)
         })
     }

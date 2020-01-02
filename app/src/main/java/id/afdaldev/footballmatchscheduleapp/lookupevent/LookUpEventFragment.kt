@@ -5,30 +5,38 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import id.afdaldev.footballmatchscheduleapp.*
+import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
 import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
-import id.afdaldev.footballmatchscheduleapp.favoriteevent.FavoriteViewModel
+import id.afdaldev.footballmatchscheduleapp.favoriteevent.FavoriteEventViewModel
 import id.afdaldev.footballmatchscheduleapp.favoriteevent.database
-import id.afdaldev.footballmatchscheduleapp.lookupevent.team.AwayTeamViewModel
-import id.afdaldev.footballmatchscheduleapp.lookupevent.team.HomeTeamViewModel
-import id.afdaldev.footballmatchscheduleapp.utils.*
+import id.afdaldev.footballmatchscheduleapp.lookupevent.team.TeamViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.ShareViewModel
+import id.afdaldev.footballmatchscheduleapp.utils.gone
+import id.afdaldev.footballmatchscheduleapp.utils.imgPicasso
+import id.afdaldev.footballmatchscheduleapp.utils.visible
 import kotlinx.android.synthetic.main.fragment_look_up_event.*
-import kotlinx.android.synthetic.main.recyclerview.progressBar
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val ARG_PARAM = "param"
 
 class LookUpEventFragment : Fragment() {
 
     private var param: String? = null
+
     private var menuItem: Menu? = null
     private lateinit var favoriteMenu: MenuItem
+
     private var isFavorite: Boolean = false
     private var eventList: MutableList<EventItem> = mutableListOf()
-    private lateinit var favoriteViewModel: FavoriteViewModel
+
+    private val lookUpEventViewModel: LookUpEventViewModel by viewModel()
+    private val favoriteEventViewModel: FavoriteEventViewModel by viewModel()
+    private val teamViewModel: TeamViewModel by viewModel()
+    private val shareViewModel: ShareViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +55,9 @@ class LookUpEventFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_look_up_event, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        favoriteViewModel = ViewModelProviders.of(this)[FavoriteViewModel::class.java]
-    }
-
     override fun onResume() {
         super.onResume()
-        progressBar.visible()
+        progressBarEvent.visible()
         showLookUpEvent()
         showHomeTeam()
         showAwayTeam()
@@ -76,9 +79,9 @@ class LookUpEventFragment : Fragment() {
         return when (item.itemId) {
             R.id.favorite -> {
                 if (isFavorite)
-                favoriteViewModel.removeFromFavorite(requireContext(), param.toString())
+                    favoriteEventViewModel.removeFromFavorite(param.toString())
                 else
-                    favoriteViewModel.addToFavorite(requireContext(), eventList[0])
+                    favoriteEventViewModel.addToFavorite(eventList[0])
                 isFavorite = !isFavorite
                 setFavorite()
                 true
@@ -109,53 +112,45 @@ class LookUpEventFragment : Fragment() {
     }
 
     private fun showLookUpEvent() {
-        val viewModelFactory =
-            ViewModelFactory(param.toString())
-        val lookUpEventViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[LookUpEventViewModel::class.java]
-        lookUpEventViewModel.getLookUpEvent().observe(this, Observer {
-            progressBar.gone()
+        lookUpEventViewModel.getLookUpEvent(param.toString()).observe(this, Observer {
+            progressBarEvent.gone()
+            initView(it.events[0])
             favoriteMenu.isVisible = true
-            
+
             eventList.addAll(it.events)
-
-            val lookUpEvent = it.events[0]
-
-            tvStrEvent.text = lookUpEvent.strEvent
-            tvStrDate.text = lookUpEvent.strDate
-            tvHomeTeam.text = lookUpEvent.strHomeTeam
-            tvAwayTeam.text = lookUpEvent.strAwayTeam
-
-            val homeTeamScore: Any? = lookUpEvent.intHomeScore
-            val awayTeamScore: Any? = lookUpEvent.intAwayScore
-            tvHomeScore.text = homeTeamScore?.toString() ?: "-"
-            tvAwayScore.text = awayTeamScore?.toString() ?: "-"
-
-            val homeTeamGoals: Any? = lookUpEvent.strHomeGoalDetails
-            val awayTeamGoals: Any? = lookUpEvent.strAwayGoalDetails
-            tvHomeTeamGoals.text = homeTeamGoals?.toString()
-            tvAwayTeamGoals.text = awayTeamGoals?.toString()
-
-            val homeTeamYellowCard: Any? = lookUpEvent.strHomeYellowCards
-            val awayTeamYellowCard: Any? = lookUpEvent.strAwayYellowCards
-            tvHomeTeamYellowCard.text = homeTeamYellowCard?.toString()
-            tvAwayTeamYellowCard.text = awayTeamYellowCard?.toString()
-
-            val homeTeamRedCard: Any? = lookUpEvent.strHomeRedCards
-            val awayTeamRedCard: Any? = lookUpEvent.strAwayRedCards
-            tvHomeTeamRedCard.text = homeTeamRedCard?.toString()
-            tvAwayTeamRedCard.text = awayTeamRedCard?.toString()
         })
     }
 
+    private fun initView(data: EventItem) {
+        tvStrEvent.text = data.strEvent
+        tvStrDate.text = data.strDate
+        tvHomeTeam.text = data.strHomeTeam
+        tvAwayTeam.text = data.strAwayTeam
+
+        val homeTeamScore: Any? = data.intHomeScore
+        val awayTeamScore: Any? = data.intAwayScore
+        tvHomeScore.text = homeTeamScore?.toString() ?: "-"
+        tvAwayScore.text = awayTeamScore?.toString() ?: "-"
+
+        val homeTeamGoals: Any? = data.strHomeGoalDetails
+        val awayTeamGoals: Any? = data.strAwayGoalDetails
+        tvHomeTeamGoals.text = homeTeamGoals?.toString()
+        tvAwayTeamGoals.text = awayTeamGoals?.toString()
+
+        val homeTeamYellowCard: Any? = data.strHomeYellowCards
+        val awayTeamYellowCard: Any? = data.strAwayYellowCards
+        tvHomeTeamYellowCard.text = homeTeamYellowCard?.toString()
+        tvAwayTeamYellowCard.text = awayTeamYellowCard?.toString()
+
+        val homeTeamRedCard: Any? = data.strHomeRedCards
+        val awayTeamRedCard: Any? = data.strAwayRedCards
+        tvHomeTeamRedCard.text = homeTeamRedCard?.toString()
+        tvAwayTeamRedCard.text = awayTeamRedCard?.toString()
+    }
+
     private fun showHomeTeam() {
-        val viewModelFactory =
-            ViewModelFactory(
-                getIdHomeTeam()
-            )
-        val teamViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[HomeTeamViewModel::class.java]
-        teamViewModel.getHomeTeam().observe(this, Observer {
+        val idHomeTeam = shareViewModel.idHomeTeam.value.toString()
+        teamViewModel.getHomeTeam(idHomeTeam).observe(this, Observer {
             val homeTeam = it.teams[0]
             imgPicasso(
                 homeTeam.strTeamBadge,
@@ -165,13 +160,8 @@ class LookUpEventFragment : Fragment() {
     }
 
     private fun showAwayTeam() {
-        val viewModelFactory =
-            ViewModelFactory(
-                getIdAwayTeam()
-            )
-        val teamViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[AwayTeamViewModel::class.java]
-        teamViewModel.getAwayTeam().observe(this, Observer {
+        val idAwayTeam = shareViewModel.idAwayTeam.value.toString()
+        teamViewModel.getAwayTeam(idAwayTeam).observe(this, Observer {
             val awayTeam = it.teams[0]
             imgPicasso(
                 awayTeam.strTeamBadge,

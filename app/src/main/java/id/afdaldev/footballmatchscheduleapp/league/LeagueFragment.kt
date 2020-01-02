@@ -4,14 +4,14 @@ package id.afdaldev.footballmatchscheduleapp.league
 import android.os.Bundle
 import android.view.*
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import id.afdaldev.footballmatchscheduleapp.*
+import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.SearchItem
 import id.afdaldev.footballmatchscheduleapp.favoriteevent.FavoritePagerFragment
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
@@ -19,18 +19,19 @@ import id.afdaldev.footballmatchscheduleapp.lookupleague.LookUpLeagueFragment
 import id.afdaldev.footballmatchscheduleapp.search.SearchAdapter
 import id.afdaldev.footballmatchscheduleapp.search.SearchViewModel
 import id.afdaldev.footballmatchscheduleapp.utils.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A simple [Fragment] subclass.
- */
 class LeagueFragment : Fragment() {
 
     private lateinit var leagueAdapter: LeagueAdapter
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var leagueLayoutManager: LinearLayoutManager
-    private lateinit var searchLayoutManager: LinearLayoutManager
+    private lateinit var layoutManager: LinearLayoutManager
+    private val searchViewModel: SearchViewModel by viewModel()
+    private val leagueViewModel: LeagueViewModel by viewModel()
+    private val shareViewModel: ShareViewModel by sharedViewModel()
     private var searchList: MutableList<SearchItem> = mutableListOf()
     private var soccerList: List<SearchItem> = mutableListOf()
 
@@ -38,7 +39,6 @@ class LeagueFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         (requireActivity() as AppCompatActivity).supportActionBar
         return inflater.inflate(R.layout.recyclerview, container, false)
     }
@@ -53,20 +53,22 @@ class LeagueFragment : Fragment() {
         recyclerView = requireActivity().findViewById(R.id.recyclerView)
         progressBar = requireActivity().findViewById(R.id.progressBar)
 
-        progressBar.visible()
-        leagueLayoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = leagueLayoutManager
+        layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
 
         leagueAdapter = LeagueAdapter {
-            setIdLeague(it.idLeague.toString())
+            shareViewModel.setIdLeague(it.idLeague.toString())
             addFragment(LookUpLeagueFragment(), R.id.fragment_container)
         }
 
-        val leagueViewModel = ViewModelProviders.of(this)[LeagueViewModel::class.java]
+        progressBar.visible()
         leagueViewModel.getLeague().observe(this, Observer {
-            progressBar.gone()
-            leagueAdapter.setLeague(it)
+            if (it.isNotEmpty()) {
+                progressBar.gone()
+                leagueAdapter.setLeague(it)
+            }
         })
+
         recyclerView.adapter = leagueAdapter
     }
 
@@ -76,20 +78,21 @@ class LeagueFragment : Fragment() {
         val searchView = searchMenu.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchSomething(query.toString())
+                searchMatch(query.toString())
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                searchMatch(newText.toString())
+                return true
             }
         })
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.favorite ->{
+        when (item.itemId) {
+            R.id.favorite -> {
                 replaceFragment(FavoritePagerFragment(), R.id.fragment_container)
             }
             else -> super.onOptionsItemSelected(item)
@@ -97,30 +100,31 @@ class LeagueFragment : Fragment() {
         return true
     }
 
-    private fun searchSomething(e: String) {
-        progressBar.visible()
-        searchLayoutManager = LinearLayoutManager(context)
-
-        recyclerView.layoutManager = searchLayoutManager
+    private fun searchMatch(search: String) {
         searchAdapter = SearchAdapter {
-            setIdHomeTeam(it.idHomeTeam)
-            setIdAwayTeam(it.idAwayTeam)
+            shareViewModel.setIdHomeTeam(it.idHomeTeam)
+            shareViewModel.setIdAwayTeam(it.idAwayTeam)
             replaceFragment(LookUpEventFragment.newInstance(it.idEvent), R.id.fragment_container)
         }
-
-        val searchViewModel = ViewModelProviders.of(this)[SearchViewModel::class.java]
-        searchViewModel.loadSearch(e, requireContext()).observe(this, Observer {
-            searchList.clear()
-            searchList.addAll(it.event)
+        EspressoIdlingResource.increment()
+        searchViewModel.getSearchFromAPI(search).observe(this, Observer {
+            if (it.event.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "No Data for $search", Toast.LENGTH_SHORT).show()
+                EspressoIdlingResource.decrement()
+            } else {
+                searchList.clear()
+                searchList.addAll(it.event)
+                EspressoIdlingResource.decrement()
+            }
         })
-        filterSoccer()
+
+        filterSearch()
     }
 
-    private fun filterSoccer(){
+    private fun filterSearch() {
         soccerList = searchList.filter {
             it.strSport.contains("Soccer")
         }
-        progressBar.gone()
         searchAdapter.setSearch(soccerList)
         recyclerView.adapter = searchAdapter
     }

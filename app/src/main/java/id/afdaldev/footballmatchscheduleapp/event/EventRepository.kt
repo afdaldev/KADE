@@ -11,17 +11,17 @@ import retrofit2.Response
 class EventRepository {
 
     fun getPastEvent(idLeague: String): MutableLiveData<Event> {
-        val pastEvent = MutableLiveData<Event>()
+        val pastEventList = MutableLiveData<Event>()
         APIService().getPastEvent(idLeague).enqueue(object : Callback<Event> {
             override fun onFailure(call: Call<Event>, t: Throwable) {
                 d("TAG", "pastEventOnFailure : ${t.localizedMessage}")
             }
 
             override fun onResponse(call: Call<Event>, response: Response<Event>) {
-                pastEvent.value = response.body()
+                pastEventList.value = response.body()
             }
         })
-        return pastEvent
+        return pastEventList
     }
 
     fun getNextEvent(idLeague: String): MutableLiveData<Event> {
