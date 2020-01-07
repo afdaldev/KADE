@@ -7,90 +7,94 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
-import id.afdaldev.footballmatchscheduleapp.utils.ShareViewModel
-import id.afdaldev.footballmatchscheduleapp.utils.gone
-import id.afdaldev.footballmatchscheduleapp.utils.replaceFragment
-import id.afdaldev.footballmatchscheduleapp.utils.visible
-import kotlinx.android.synthetic.main.recyclerview.*
+import id.afdaldev.footballmatchscheduleapp.utils.*
+import kotlinx.android.synthetic.main.match_recyclerview.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-private const val ARG_MATCH = "match"
 
 class EventFragment : Fragment() {
 
     private val eventViewModel: EventViewModel by viewModel()
     private val shareViewModel: ShareViewModel by sharedViewModel()
-    private lateinit var eventAdapter: EventAdapter
-
-    private var param: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param = it.getString(ARG_MATCH)
-        }
-    }
+    private lateinit var lastMatchAdapter: EventAdapter
+    private lateinit var nextMatchAdapter: EventAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.recyclerview, container, false)
+        return inflater.inflate(R.layout.match_recyclerview, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        eventAdapter = EventAdapter {
-            shareViewModel.setIdHomeTeam(it.idHomeTeam.toString())
-            shareViewModel.setIdAwayTeam(it.idAwayTeam.toString())
+        initView(true)
+        lastMatchAdapter = EventAdapter {
+            setShareViewModel(
+                it.idHomeTeam.toString(),
+                it.idAwayTeam.toString(),
+                it.idEvent)
             replaceFragment(
-                LookUpEventFragment.newInstance(it.idEvent.toString()),
+                LookUpEventFragment(),
                 R.id.fragment_container
             )
         }
+
+        nextMatchAdapter = EventAdapter {
+            setShareViewModel(
+                it.idHomeTeam.toString(),
+                it.idAwayTeam.toString(),
+                it.idEvent)
+            replaceFragment(
+                LookUpEventFragment(),
+                R.id.fragment_container
+            )
+        }
+
+        rvNextMatch.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rvLastMatch.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
     }
 
     override fun onResume() {
         super.onResume()
-        progressBar.visible()
         val idLeague = shareViewModel.idLeague.value.toString()
-        if (param == pastEvent)
-            showPastEvent(idLeague)
-        else
-            showNextEvent(idLeague)
-
-        recyclerView.adapter = eventAdapter
-        progressBar.gone()
-    }
-
-    private fun showPastEvent(idLeague: String) {
-        eventViewModel.getPastEvent(idLeague).observe(this, Observer {
-            eventAdapter.setEvent(it.events)
-        })
+        showNextEvent(idLeague)
+        showPastEvent(idLeague)
     }
 
     private fun showNextEvent(idLeague: String) {
         eventViewModel.getNextEvent(idLeague).observe(this, Observer {
-            eventAdapter.setEvent(it.events)
+            nextMatchAdapter.setEvent(it.events)
+            rvNextMatch.adapter = nextMatchAdapter
         })
     }
 
-    companion object {
+    private fun showPastEvent(idLeague: String) {
+        eventViewModel.getPastEvent(idLeague).observe(this, Observer {
+            lastMatchAdapter.setEvent(it.events)
+            rvLastMatch.adapter = lastMatchAdapter
+            initView(false)
+        })
+    }
 
-        const val pastEvent = "pastEvent"
-        const val nextEvent = "nextEvent"
+    private fun setShareViewModel(idHomeTeam: String, idAwayTeam: String, idEvent: String) {
+        shareViewModel.setIdHomeTeam(idHomeTeam)
+        shareViewModel.setIdAwayTeam(idAwayTeam)
+        shareViewModel.setIdEvent(idEvent)
+    }
 
-        @JvmStatic
-        fun newInstance(param: String) =
-            EventFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_MATCH, param)
-                }
-            }
+    private fun initView(state: Boolean) {
+        if (state) {
+            pbMatch.visible()
+            tvNextMatchLabel.invisible()
+            tvLastMatchLabel.invisible()
+        } else {
+            pbMatch.gone()
+            tvNextMatchLabel.visible()
+            tvLastMatchLabel.visible()
+        }
     }
 }

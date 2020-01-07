@@ -6,13 +6,17 @@ import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.LookUpLeagueItem
 import id.afdaldev.footballmatchscheduleapp.event.EventFragment
+import id.afdaldev.footballmatchscheduleapp.lookupallteams.LookUpAllTeamsFragment
+import id.afdaldev.footballmatchscheduleapp.lookuptable.LookUpTableFragment
 import id.afdaldev.footballmatchscheduleapp.utils.*
-import kotlinx.android.synthetic.main.fragment_look_up_league.*
+import kotlinx.android.synthetic.main.look_up_layout.*
+import kotlinx.android.synthetic.main.top_layout.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,18 +29,17 @@ class LookUpLeagueFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_look_up_league, container, false)
+        (requireActivity() as AppCompatActivity).supportActionBar
+        return inflater.inflate(R.layout.look_up_layout, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val pagerAdapter =
-            PagerAdapter(
-                childFragmentManager
-            )
-        pagerAdapter.addFragment(EventFragment.newInstance(EventFragment.pastEvent), "Previous")
-        pagerAdapter.addFragment(EventFragment.newInstance(EventFragment.nextEvent), "Next")
-        viewpagerEvent.adapter = pagerAdapter
+        val pagerAdapter = PagerAdapter(childFragmentManager)
+        pagerAdapter.addFragment(EventFragment(), "Match")
+        pagerAdapter.addFragment(LookUpTableFragment(), "Standings")
+        pagerAdapter.addFragment(LookUpAllTeamsFragment(), "Team")
+        viewPager.adapter = pagerAdapter
     }
 
     override fun onResume() {
@@ -54,8 +57,8 @@ class LookUpLeagueFragment : Fragment() {
     }
 
     private fun initView(data: LookUpLeagueItem) {
-        tvLeagueName.text = data.strLeague
+        tvName.text = data.strLeague
         tvDescription.text = data.strDescriptionEN
-        imgPicasso(data.strBadge.toString(), imgLeagueBadge)
+        imgPicasso(data.strBadge.toString(), imgBadge)
     }
 }

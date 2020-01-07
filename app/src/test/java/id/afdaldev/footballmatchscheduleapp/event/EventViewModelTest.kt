@@ -49,7 +49,6 @@ class EventViewModelTest {
         argumentCaptor<Event>().apply {
             verify(observer, times(1)).onChanged(capture())
         }
-
     }
 
     @Test

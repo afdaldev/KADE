@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.League
 import id.afdaldev.footballmatchscheduleapp.utils.imgPicasso
-import kotlinx.android.synthetic.main.league_list.view.*
+import kotlinx.android.synthetic.main.card_item.view.*
 
 class LeagueAdapter(private val listener: (League) -> Unit) :
     RecyclerView.Adapter<LeagueAdapter.LeagueViewHolder>() {
@@ -23,7 +23,7 @@ class LeagueAdapter(private val listener: (League) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeagueViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.league_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.card_item, parent, false)
         return LeagueViewHolder(
             itemView
         )
@@ -43,7 +43,7 @@ class LeagueAdapter(private val listener: (League) -> Unit) :
     }
 
     class LeagueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val strBadge: AppCompatImageView = itemView.imgStrBadge
-        val tvStrLeague: AppCompatTextView = itemView.tvStrLeague
+        val strBadge: AppCompatImageView = itemView.imgBadge
+        val tvStrLeague: AppCompatTextView = itemView.tvName
     }
 }

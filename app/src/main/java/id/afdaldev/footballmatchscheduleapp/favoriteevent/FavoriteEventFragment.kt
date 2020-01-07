@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import id.afdaldev.footballmatchscheduleapp.R
-import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
+import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
 import id.afdaldev.footballmatchscheduleapp.lookupevent.LookUpEventFragment
 import id.afdaldev.footballmatchscheduleapp.utils.ShareViewModel
 import id.afdaldev.footballmatchscheduleapp.utils.gone
@@ -20,20 +20,18 @@ import kotlinx.android.synthetic.main.recyclerview.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A simple [Fragment] subclass.
- */
-
 private const val ARG_PARAM = "param"
 
-class FavoriteFragment : Fragment() {
+class FavoriteEventFragment : Fragment() {
 
-    private lateinit var adapter: FavoriteEventAdapter
-    private var favoriteList: MutableList<Favorite> = mutableListOf()
-    private var pastList: List<Favorite> = mutableListOf()
-    private var nextList: List<Favorite> = mutableListOf()
+    private lateinit var favoriteEventAdapter: FavoriteEventAdapter
+
     private val favoriteEventViewModel: FavoriteEventViewModel by viewModel()
     private val shareViewModel: ShareViewModel by sharedViewModel()
+
+    private var favoriteEventList: MutableList<EventItem> = mutableListOf()
+    private var pastEventList: List<EventItem> = mutableListOf()
+    private var nextEventList: List<EventItem> = mutableListOf()
 
     private var param: String? = null
 
@@ -53,49 +51,52 @@ class FavoriteFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        progressBar.visible()
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        adapter = FavoriteEventAdapter {
+        favoriteEventAdapter = FavoriteEventAdapter {
             shareViewModel.setIdHomeTeam(it.idHomeTeam.toString())
             shareViewModel.setIdAwayTeam(it.idAwayTeam.toString())
-            replaceFragment(
-                LookUpEventFragment.newInstance(it.idEvent.toString()),
-                R.id.fragment_container
-            )
+            shareViewModel.setIdEvent(it.idEvent)
+            replaceFragment(LookUpEventFragment(), R.id.fragment_container)
         }
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        progressBar.visible()
     }
 
     override fun onResume() {
         super.onResume()
-        favoriteEventViewModel.getFavorite().observe(this, Observer {
+        favoriteEventViewModel.getAllFavoriteEvent().observe(this, Observer {
             progressBar.gone()
-            favoriteList.clear()
-            favoriteList.addAll(it)
+            favoriteEventList.clear()
+            favoriteEventList.addAll(it)
         })
-
-        if (param == pastEventFavorite) showPastEvent() else showNextEvent()
+        when (param) {
+            pastEventFavorite -> {
+                showPastEvent()
+            }
+            nextEventFavorite -> {
+                showNextEvent()
+            }
+        }
     }
 
     private fun showPastEvent() {
-        pastList = favoriteList.filterNot {
-            it.intHomeScore.equals("null")
+        pastEventList = favoriteEventList.filterNot {
+            it.intHomeScore.isNullOrBlank()
         }
-        isValidateList(pastList)
-        adapter.setEvent(pastList)
-        recyclerView.adapter = adapter
+        isValidateList(pastEventList)
+        favoriteEventAdapter.setFavoriteList(pastEventList)
+        recyclerView.adapter = favoriteEventAdapter
     }
 
     private fun showNextEvent() {
-        nextList = favoriteList.filter {
-            it.intHomeScore.equals("null")
+        nextEventList = favoriteEventList.filter {
+            it.intHomeScore.isNullOrBlank()
         }
-        isValidateList(nextList)
-        adapter.setEvent(nextList)
-        recyclerView.adapter = adapter
+        isValidateList(nextEventList)
+        favoriteEventAdapter.setFavoriteList(nextEventList)
+        recyclerView.adapter = favoriteEventAdapter
     }
 
-    private fun isValidateList(eventList: List<Favorite>) {
+    private fun isValidateList(eventList: List<EventItem>) {
         if (eventList.isEmpty())
             Snackbar.make(requireView(), "No data in Favorite", Snackbar.LENGTH_SHORT).show()
         else
@@ -109,7 +110,7 @@ class FavoriteFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(param: String) =
-            FavoriteFragment().apply {
+            FavoriteEventFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM, param)
                 }

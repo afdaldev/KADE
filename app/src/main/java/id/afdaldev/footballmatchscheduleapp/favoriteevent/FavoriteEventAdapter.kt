@@ -3,62 +3,50 @@ package id.afdaldev.footballmatchscheduleapp.favoriteevent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.R
-import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
-import kotlinx.android.synthetic.main.match_list.view.*
+import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
+import id.afdaldev.footballmatchscheduleapp.utils.BaseViewHolder
+import kotlinx.android.synthetic.main.match_vertical_item.view.*
 
-class FavoriteEventAdapter(private val listener: (Favorite) -> Unit) :
-    RecyclerView.Adapter<FavoriteEventAdapter.FavoriteViewHolder>() {
+class FavoriteEventAdapter(private val listener: (EventItem) -> Unit) :
+    RecyclerView.Adapter<BaseViewHolder<*>>() {
 
-    private var favoriteEventList: List<Favorite> = emptyList()
+    private var favoriteEventList: List<EventItem> = emptyList()
 
-    fun setEvent(favorite: List<Favorite>) {
-        this.favoriteEventList = favorite
+    fun setFavoriteList(data: List<EventItem>) {
+        this.favoriteEventList = data
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): FavoriteViewHolder {
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.match_list, parent, false)
-        return FavoriteViewHolder(
-            itemView
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.match_vertical_item, parent, false)
+        return FavoriteEventViewHolder(view)
     }
 
     override fun getItemCount(): Int = favoriteEventList.size
 
-    override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        val favoriteEvent = favoriteEventList[position]
-        val homeScore: Any? = favoriteEvent.intHomeScore
-        val awayScore: Any? = favoriteEvent.intAwayScore
-
-        holder.tvEvent.text = favoriteEvent.strEvent
-        holder.tvDate.text = favoriteEvent.strDate
-        holder.tvHomeTeam.text = favoriteEvent.strHomeTeam
-        holder.tvAwayTeam.text = favoriteEvent.strAwayTeam
-
-        if (homeScore != "null")
-            holder.tvHomeScore.text = homeScore.toString()
-        else holder.tvHomeScore.text = "-"
-
-        if (awayScore != "null")
-            holder.tvAwayScore.text = awayScore.toString()
-        else holder.tvAwayScore.text = "-"
-
-        holder.itemView.setOnClickListener { listener(favoriteEvent) }
+    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
+        val list = favoriteEventList[position]
+        when (holder) {
+            is FavoriteEventViewHolder -> holder.bind(list)
+        }
+        holder.itemView.setOnClickListener { listener(list) }
     }
 
-    class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvEvent: AppCompatTextView = itemView.tvStrEvent
-        val tvDate: AppCompatTextView = itemView.tvStrDate
-        val tvHomeTeam: AppCompatTextView = itemView.tvHomeTeam
-        var tvHomeScore: AppCompatTextView = itemView.tvHomeScore
-        val tvAwayTeam: AppCompatTextView = itemView.tvAwayTeam
-        val tvAwayScore: AppCompatTextView = itemView.tvAwayScore
+    inner class FavoriteEventViewHolder(itemView: View) : BaseViewHolder<EventItem>(itemView) {
+        override fun bind(item: EventItem) {
+            itemView.tvStrEvent.text = item.strEvent
+            itemView.tvStrDate.text = item.strDate
+            itemView.tvHomeTeam.text = item.strHomeTeam
+            itemView.tvAwayTeam.text = item.strAwayTeam
+
+            val homeScore: String? = item.intHomeScore
+            val awayScore: String? = item.intAwayScore
+
+            itemView.tvHomeScore.text = homeScore ?: "-"
+            itemView.tvAwayScore.text = awayScore ?: "-"
+        }
     }
 }

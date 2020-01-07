@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNextMatchLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tenDP"
+        android:layout_marginTop="@dimen/tenDP"
+        android:text="@string/next_match"
+        android:textSize="@dimen/twentySP"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNextMatch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tenDP"
+        android:layout_marginTop="@dimen/tenDP"
+        android:layout_marginEnd="@dimen/tenDP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNextMatchLabel" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLastMatchLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tenDP"
+        android:layout_marginTop="@dimen/tenDP"
+        android:text="@string/last_match"
+        android:textSize="@dimen/twentySP"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvNextMatch" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLastMatch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tenDP"
+        android:layout_marginTop="@dimen/tenDP"
+        android:layout_marginEnd="@dimen/tenDP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLastMatchLabel" />
+
+    <ProgressBar
+        android:id="@+id/pbMatch"
+        android:layout_width="@dimen/fiftyDP"
+        android:layout_height="@dimen/fiftyDP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

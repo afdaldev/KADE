@@ -2,18 +2,22 @@ package id.afdaldev.footballmatchscheduleapp.favoriteevent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import id.afdaldev.footballmatchscheduleapp.data.local.FavoriteDatabase
 import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
-import id.afdaldev.footballmatchscheduleapp.data.model.Favorite
 
-class FavoriteEventViewModel(private val favoriteEventRepository: FavoriteEventRepository) : ViewModel() {
+class FavoriteEventViewModel(private val database: FavoriteDatabase) : ViewModel() {
 
-    fun getFavorite(): LiveData<List<Favorite>> = favoriteEventRepository.getFavoriteEvent()
+    fun getAllFavoriteEvent(): LiveData<List<EventItem>> =
+        database.eventDao().getEventFromLocal()
 
-    fun addToFavorite(event: EventItem) {
-        favoriteEventRepository.addToFavorite(event)
-    }
+    fun insertEventToFavorite(event: EventItem) =
+        database.eventDao().insertEvent(event)
 
-    fun removeFromFavorite(id: String) {
-        favoriteEventRepository.removeFromFavorite(id)
+    fun getEventById(idEvent: String) =
+        database.eventDao().getEventById(idEvent)
+
+
+    fun deleteEventById(idEvent: String) {
+        database.eventDao().deleteEventById(idEvent)
     }
 }

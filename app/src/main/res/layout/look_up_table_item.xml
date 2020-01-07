@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/oneHundredDP"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/tenDP">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/fiveDP">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipName"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/fiveDP"
+            android:layout_marginTop="@dimen/fiveDP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/app_name" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipLoss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipTotal"
+            app:layout_constraintStart_toEndOf="@id/chipDraw"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipLoss"
+            app:layout_constraintStart_toEndOf="@id/chipWin"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipWin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipDraw"
+            app:layout_constraintStart_toEndOf="@id/chipGoalsDifference"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGoalsDifference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipWin"
+            app:layout_constraintStart_toEndOf="@id/chipGoalsAgainst"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGoalsAgainst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipGoalsDifference"
+            app:layout_constraintStart_toEndOf="@id/chipGoalsFor"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipGoalsFor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipGoalsAgainst"
+            app:layout_constraintStart_toEndOf="@id/chipPlayed"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPlayed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chipGoalsFor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chipName"
+            tools:text="50" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

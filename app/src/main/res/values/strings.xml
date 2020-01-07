@@ -7,8 +7,13 @@
     <string name="goals_label">Goals</string>
     <string name="yellow_card_label">Yellow Card</string>
     <string name="red_card_label">Red Card</string>
-    <string name="search">Search</string>
+    <string name="search">Search Event</string>
     <string name="favorite">Favorite</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next_match">Next Match</string>
+    <string name="last_match">Last Match</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

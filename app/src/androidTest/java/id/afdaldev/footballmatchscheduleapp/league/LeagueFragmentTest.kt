@@ -37,7 +37,7 @@ class LeagueFragmentTest {
 
     @Test
     fun searchBehaviourTest() {
-        onView(withId(search))
+        onView(withId(searchEvent))
             .check(matches(isDisplayed())).perform(click())
         onView(withId(search_src_text)).perform(typeText("c"))
         onView(withId(search_src_text)).perform(typeText("i"))

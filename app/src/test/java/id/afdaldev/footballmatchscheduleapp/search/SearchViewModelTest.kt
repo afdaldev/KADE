@@ -23,7 +23,10 @@ class SearchViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @Mock
-    private val searchViewModel = SearchViewModel()
+    private lateinit var searchRepository: SearchRepository
+
+    @Mock
+    private lateinit var searchViewModel: SearchViewModel
 
     @Mock
     private lateinit var searchList: MutableLiveData<Search>
@@ -31,6 +34,7 @@ class SearchViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        searchViewModel = SearchViewModel(searchRepository)
     }
 
     @Test
@@ -38,11 +42,11 @@ class SearchViewModelTest {
         val observer = mock<Observer<Search>>()
         val liveData = MutableLiveData<Search>()
 
-        `when`(searchViewModel.getSearchFromAPI(search))
+        `when`(searchViewModel.getSearchMatch(search))
             .thenReturn(searchList)
 
         liveData.observeForever(observer)
-        liveData.value = searchViewModel.getSearchFromAPI(search).value
+        liveData.value = searchViewModel.getSearchMatch(search).value
 
         argumentCaptor<Search>().apply {
             verify(observer, times(1)).onChanged(capture())

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/threeHundredDP"
+    android:layout_height="@dimen/oneHundredTwentyDP"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/tenDP"
+    app:cardCornerRadius="@dimen/fiveDP"
+    android:elevation="@dimen/fiftyDP"
+    style="@style/Widget.MaterialComponents.CardView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvStrEvent"
+            android:layout_width="@dimen/zeroDP"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/app_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvStrDate"
+            android:layout_width="@dimen/zeroDP"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStrEvent"
+            tools:text="30/11/19" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSeparator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/zeroDP"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="@string/score_separator"
+            android:textSize="@dimen/twentyFiveSP"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStrDate" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHomeScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/tenDP"
+            android:gravity="center"
+            android:textSize="@dimen/fiftySP"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvSeparator"
+            app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+            tools:text="0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHomeTeam"
+            android:layout_width="@dimen/zeroDP"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/tenDP"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvHomeScore"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+            tools:text="@string/app_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAwayScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/tenDP"
+            android:gravity="center"
+            android:textSize="@dimen/fiftySP"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvSeparator"
+            app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+            tools:text="0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAwayTeam"
+            android:layout_width="@dimen/zeroDP"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/tenDP"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvAwayScore"
+            app:layout_constraintTop_toBottomOf="@id/tvStrDate"
+            tools:text="@string/app_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

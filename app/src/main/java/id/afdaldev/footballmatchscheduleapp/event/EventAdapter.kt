@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import id.afdaldev.footballmatchscheduleapp.R
 import id.afdaldev.footballmatchscheduleapp.data.model.EventItem
-import kotlinx.android.synthetic.main.match_list.view.*
+import kotlinx.android.synthetic.main.match_horizontal_item.view.*
 
 class EventAdapter(private val listener: (EventItem) -> Unit) :
     RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
@@ -21,7 +21,7 @@ class EventAdapter(private val listener: (EventItem) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.match_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.match_horizontal_item, parent, false)
         return EventViewHolder(
             itemView
         )

@@ -1,4 +1,4 @@
-package id.afdaldev.footballmatchscheduleapp
+package id.afdaldev.footballmatchscheduleapp.utils
 
 import android.app.Application
 import id.afdaldev.footballmatchscheduleapp.module.*
@@ -14,14 +14,19 @@ class FootballMatchScheduleApp : Application() {
             androidLogger()
             androidContext(this@FootballMatchScheduleApp)
             modules(listOf(
+                favoriteTeamModule,
                 leagueModule,
                 lookUpLeagueModule,
                 eventModule,
                 lookUpEventModule,
-                favoriteEventModule,
+//                favoriteEventModule,
                 teamModule,
+                lookUpTableModule,
+                lookUpAllTeams,
                 shareViewModelModule,
-                searchModule
+                searchModule,
+                searchPlayerModule,
+                lookUpPlayerModule
             ))
         }
     }
